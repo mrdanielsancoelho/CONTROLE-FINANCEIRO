@@ -1,3 +1,4 @@
+//CONSTANTES PARA USAR NO DOM
 const transactionsUL = document.querySelector('#transactions')
 const expenseDisplay = document.querySelector('#money-minus')
 const incomeDisplay = document.querySelector('#money-plus')
@@ -6,21 +7,20 @@ const form = document.querySelector('#form')
 const inputTransactionName = document.querySelector('#text')
 const inputTransactionAmount = document.querySelector('#amount')
 
-
+//CONFIGURANDO O LOCALSTORAGE
 const localStorageTransactions = JSON.parse(localStorage
     .getItem('transactions'))
 let transactions = localStorage
     .getItem('transactions') !== null ? localStorageTransactions : []
 
-//Vamos adicionar as transações ao dom
-
+//REMOVER TRANSACOES
 const removeTransaction = ID => {
     transactions = transactions.filter(transaction =>
         transaction.id !== ID)
     updateLocalStorage()
     init()
 }
-
+//ADICIONAR TRANSACOES
 const addTransactionIntoDom = transaction => {
     const operator = transaction.amount < 0 ? '-' : '+'
     const CSSClass = transaction.amount < 0 ? 'minus' : 'plus'
@@ -38,7 +38,7 @@ const addTransactionIntoDom = transaction => {
     `
     transactionsUL.append(li)
 }
-
+//ATUALIZAR OS VALORES TOTAIS DAS TRANSACOES
 const updateBalanceValues = () => {
     const transactionsAmounts = transactions
         .map(transaction => transaction.amount)
@@ -59,20 +59,20 @@ const updateBalanceValues = () => {
     incomeDisplay.textContent = `R$${income}`
     expenseDisplay.textContent = `R$${expense}`
 }
-
+//FUNCAO INICIAR
 const init = () => {
     transactionsUL.innerHTML = ''
     transactions.forEach(addTransactionIntoDom)
     updateBalanceValues()
 }
 init()
-
+//FUNCAO USAR VALORES DO LOCALSTORAGE
 const updateLocalStorage = () => {
     localStorage.setItem('transactions', JSON.stringify(transactions))
 }
-
+//GERADOR ID ALEATORIO
 const generateID = Math.round(Math.random() * 1000000)
-
+//LISTENER PARA O FORM
 form.addEventListener('submit', event => {
     event.preventDefault()
     const transactionName = inputTransactionName.value.trim()
@@ -97,3 +97,4 @@ form.addEventListener('submit', event => {
     inputTransactionName.value = ''
     inputTransactionAmount.value = ''
 })
+//FIM
